@@ -1,0 +1,71 @@
+# render.yaml
+services:
+  # Job 1: Coleta promoções 1x por dia às 09h UTC (06h BRT)
+  - type: cron
+    name: bookhunter-coletar
+    env: python
+    plan: free
+    schedule: "0 9 * * *"  # 09h UTC = 06h BRT
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python coletar_promocoes.py"
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: AXESSO_API_KEY
+        sync: false
+
+  # Job 2: Envio da manhã às 12h UTC (09h BRT)
+  - type: cron
+    name: bookhunter-manha
+    env: python
+    plan: free
+    schedule: "0 12 * * *"  # 12h UTC = 09h BRT
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python main.py manha"
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+
+  # Job 3: Envio da tarde às 17h UTC (14h BRT)
+  - type: cron
+    name: bookhunter-tarde
+    env: python
+    plan: free
+    schedule: "0 17 * * *"  # 17h UTC = 14h BRT
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python main.py tarde"
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+
+  # Job 4: Envio da noite às 23h UTC (20h BRT)
+  - type: cron
+    name: bookhunter-noite
+    env: python
+    plan: free
+    schedule: "0 23 * * *"  # 23h UTC = 20h BRT
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python main.py noite"
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
